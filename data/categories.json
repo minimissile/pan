@@ -1,0 +1,50 @@
+{
+  "categories": [
+    {
+      "id": "movie",
+      "name": "电影",
+      "description": "各类电影资源",
+      "icon": "🎬",
+      "color": "#e74c3c",
+      "isActive": true,
+      "order": 1
+    },
+    {
+      "id": "tv",
+      "name": "电视剧",
+      "description": "电视剧集资源",
+      "icon": "📺",
+      "color": "#3498db",
+      "isActive": true,
+      "order": 2
+    },
+    {
+      "id": "anime",
+      "name": "动漫",
+      "description": "动画片和动漫资源",
+      "icon": "🎭",
+      "color": "#9b59b6",
+      "isActive": true,
+      "order": 3
+    },
+    {
+      "id": "documentary",
+      "name": "纪录片",
+      "description": "纪录片资源",
+      "icon": "📖",
+      "color": "#27ae60",
+      "isActive": true,
+      "order": 4
+    },
+    {
+      "id": "variety",
+      "name": "综艺",
+      "description": "综艺节目资源",
+      "icon": "🎪",
+      "color": "#f39c12",
+      "isActive": true,
+      "order": 5
+    }
+  ],
+  "lastUpdated": "2024-01-01T00:00:00.000Z"
+}

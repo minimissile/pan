@@ -1,0 +1,18 @@
+{
+  "stats": {
+    "totalResources": 8,
+    "totalViews": 25100000,
+    "totalDownloads": 7530000,
+    "totalCategories": 5,
+    "popularTags": [
+      { "tag": "科幻", "count": 4 },
+      { "tag": "悬疑", "count": 3 },
+      { "tag": "动画", "count": 2 },
+      { "tag": "剧情", "count": 2 },
+      { "tag": "冒险", "count": 2 },
+      { "tag": "热血", "count": 2 },
+      { "tag": "奇幻", "count": 2 }
+    ],
+    "lastUpdated": "2024-01-01T00:00:00.000Z"
+  }
+}

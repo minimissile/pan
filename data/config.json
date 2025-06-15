@@ -1,0 +1,7 @@
+{
+  "version": "1.0.0",
+  "maxDepth": 3,
+  "defaultCategory": "other",
+  "autoBackup": true,
+  "backupInterval": 86400000
+}
