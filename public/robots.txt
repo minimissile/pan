@@ -1,0 +1,96 @@
+# Robots.txt for SEO React App
+# https://yourdomain.com/robots.txt
+
+# Allow all web crawlers to access all content
+User-agent: *
+Allow: /
+
+# Disallow crawling of admin and private areas
+Disallow: /admin/
+Disallow: /api/
+Disallow: /private/
+Disallow: /_next/
+Disallow: /static/
+
+# Disallow crawling of temporary and test pages
+Disallow: /test/
+Disallow: /temp/
+Disallow: /draft/
+
+# Disallow crawling of search and filter pages with parameters
+Disallow: /*?*
+Disallow: /search?*
+Disallow: /filter?*
+
+# Disallow crawling of duplicate content
+Disallow: /print/
+Disallow: /mobile/
+
+# Allow crawling of important directories
+Allow: /images/
+Allow: /css/
+Allow: /js/
+Allow: /fonts/
+
+# Specific rules for different crawlers
+
+# Google Bot
+User-agent: Googlebot
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+
+# Bing Bot
+User-agent: Bingbot
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+
+# Baidu Bot (for Chinese market)
+User-agent: Baiduspider
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+
+# Yandex Bot (for Russian market)
+User-agent: YandexBot
+Allow: /
+Disallow: /admin/
+Disallow: /api/
+
+# Social Media Crawlers
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: LinkedInBot
+Allow: /
+
+# Disallow aggressive crawlers
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+# Crawl delay for polite crawlers
+User-agent: *
+Crawl-delay: 1
+
+# Sitemap location
+Sitemap: https://yourdomain.com/sitemap.xml
+Sitemap: https://yourdomain.com/sitemap-index.xml
+
+# Additional sitemaps
+Sitemap: https://yourdomain.com/sitemap-pages.xml
+Sitemap: https://yourdomain.com/sitemap-posts.xml
+Sitemap: https://yourdomain.com/sitemap-products.xml
+Sitemap: https://yourdomain.com/sitemap-images.xml
+
+# Host directive (specify preferred domain)
+Host: https://yourdomain.com
