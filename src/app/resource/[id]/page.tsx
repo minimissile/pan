@@ -1,6 +1,10 @@
-import { Metadata } from 'next';
+'use client';
+
+import { useState } from 'react';
 import { Calendar, Download, Eye, Star, Clock, Share2, Heart, MessageCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { QRCodeModal } from '@/components/ui/QRCodeModal';
+import { useDeviceType } from '@/hooks';
 import Link from 'next/link';
 
 // 模拟资源数据
@@ -77,35 +81,39 @@ const resources = {
   }
 };
 
-type Props = {
-  params: { id: string }
-}
-
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const resource = resources[params.id as keyof typeof resources];
-  
-  if (!resource) {
-    return {
-      title: '资源未找到 - 夸克网盘社',
-      description: '抱歉，您访问的资源不存在或已被删除。'
-    };
-  }
-
-  return {
-    title: `${resource.title} - 夸克网盘社`,
-    description: resource.description,
-    keywords: [...resource.tags, resource.category, '夸克网盘', '免费下载'].join(', '),
-    openGraph: {
-      title: resource.title,
-      description: resource.description,
-      type: 'video.movie',
-      images: [resource.image]
-    }
-  };
+interface Props {
+  params: { id: string };
 }
 
 export default function ResourceDetailPage({ params }: Props) {
   const resource = resources[params.id as keyof typeof resources];
+  const deviceType = useDeviceType();
+  const [isQRModalOpen, setIsQRModalOpen] = useState(false);
+  const [selectedDownloadLink, setSelectedDownloadLink] = useState<string>('');
+  const [selectedResourceTitle, setSelectedResourceTitle] = useState<string>('');
+
+  // 处理下载点击
+  const handleDownload = (downloadUrl: string, quality?: string) => {
+    const title = quality ? `${resource.title} - ${quality}` : resource.title;
+    
+    if (deviceType === 'mobile') {
+      // 移动端直接跳转
+      window.open(downloadUrl, '_blank');
+    } else {
+      // PC端显示二维码弹窗
+      setSelectedDownloadLink(downloadUrl);
+      setSelectedResourceTitle(title);
+      setIsQRModalOpen(true);
+    }
+  };
+
+  // 处理主下载按钮点击
+  const handleMainDownload = () => {
+    if (resource.downloadLinks && resource.downloadLinks.length > 0) {
+      const firstLink = resource.downloadLinks[0];
+      handleDownload(firstLink.link, firstLink.quality);
+    }
+  };
 
   if (!resource) {
     return (
@@ -216,7 +224,7 @@ export default function ResourceDetailPage({ params }: Props) {
 
                   {/* 操作按钮 */}
                   <div className="flex gap-3 pt-4">
-                    <Button className="flex-1">
+                    <Button className="flex-1" onClick={handleMainDownload}>
                       <Download className="h-4 w-4 mr-2" />
                       立即下载
                     </Button>
@@ -272,7 +280,11 @@ export default function ResourceDetailPage({ params }: Props) {
                     <div className="text-sm text-gray-600 dark:text-gray-400 mb-3">
                       格式：{link.format}
                     </div>
-                    <Button className="w-full" size="sm">
+                    <Button 
+                      className="w-full" 
+                      size="sm"
+                      onClick={() => handleDownload(link.link, link.quality)}
+                    >
                       <Download className="h-4 w-4 mr-2" />
                       夸克网盘下载
                     </Button>
@@ -320,6 +332,14 @@ export default function ResourceDetailPage({ params }: Props) {
           </div>
         </div>
       </div>
+
+      {/* 二维码下载弹窗 */}
+      <QRCodeModal
+        isOpen={isQRModalOpen}
+        onClose={() => setIsQRModalOpen(false)}
+        downloadUrl={selectedDownloadLink}
+        resourceTitle={selectedResourceTitle}
+      />
     </div>
   );
 }
