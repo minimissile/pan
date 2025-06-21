@@ -1,15 +1,12 @@
+'use client';
+
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Share2, Mail, MessageCircle, Heart } from 'lucide-react';
+import { ResourceCategory } from '@/types/resource';
+import { resourceService } from '@/lib/resourceService';
 
 const footerNavigation = {
-  categories: [
-    { name: '电影', href: '/movies' },
-    { name: '电视剧', href: '/tv-series' },
-    { name: '综艺', href: '/variety' },
-    { name: '动漫', href: '/anime' },
-    { name: '纪录片', href: '/documentaries' },
-    { name: '应用软件', href: '/apps' },
-  ],
   support: [
     { name: '使用帮助', href: '/help' },
     { name: '资源投稿', href: '/submit' },
@@ -42,6 +39,25 @@ const footerNavigation = {
 };
 
 export function Footer() {
+  const [categories, setCategories] = useState<ResourceCategory[]>([]);
+
+  useEffect(() => {
+    loadCategories();
+  }, []);
+
+  const loadCategories = async () => {
+    try {
+      const categoriesResult = await resourceService.getCategories();
+      if (categoriesResult.success) {
+        const activeCategories = categoriesResult.data!
+          .filter(cat => cat.isActive)
+          .sort((a, b) => (a.order || 0) - (b.order || 0));
+        setCategories(activeCategories);
+      }
+    } catch (error) {
+      console.error('加载分类数据失败:', error);
+    }
+  };
   return (
     <footer className="bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
       <div className="container py-12 lg:py-16">
@@ -84,13 +100,13 @@ export function Footer() {
           <div>
             <h3 className="text-sm font-semibold text-gray-900 dark:text-white mb-4">资源分类</h3>
             <ul className="space-y-3">
-              {footerNavigation.categories.map((item) => (
-                <li key={item.name}>
+              {categories.map((category) => (
+                <li key={category.id}>
                   <Link
-                    href={item.href}
+                    href={`/category/${category.slug}`}
                     className="text-sm text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
                   >
-                    {item.name}
+                    {category.name}
                   </Link>
                 </li>
               ))}

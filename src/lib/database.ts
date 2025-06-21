@@ -431,6 +431,7 @@ export class ResourceDatabase {
       const updatedResource: Resource = {
         ...resources[index],
         ...updateData,
+        id: id, // 确保 id 不会被覆盖
         updatedAt: new Date().toISOString()
       };
       
@@ -614,7 +615,7 @@ export class ResourceDatabase {
       }
       
       // 如果更新slug，检查是否已存在
-      if (updateData.slug && updateData.slug !== categories[index].slug) {
+      if (updateData?.slug && updateData.slug !== categories[index]?.slug) {
         if (categories.some(c => c.slug === updateData.slug && c.id !== id)) {
           return {
             success: false,
@@ -633,7 +634,8 @@ export class ResourceDatabase {
         };
       }
       
-      const updatedCategory: ResourceCategory = {
+      const updatedCategory = {
+        id, // 确保id不会被undefined
         ...categories[index],
         ...updateData,
         updatedAt: new Date().toISOString()

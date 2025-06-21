@@ -11,14 +11,7 @@ import { analytics } from '@/components/analytics/Analytics';
 
 const resourceService = new ResourceService();
 
-const navigation = [
-  { name: '首页', href: '/' },
-  { name: '电影', href: '/movies' },
-  { name: '电视剧', href: '/tv-series' },
-  { name: '综艺', href: '/variety' },
-  { name: '动漫', href: '/anime' },
-  { name: '应用', href: '/apps' },
-];
+import { ResourceCategory } from '@/types/resource';
 
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -27,8 +20,27 @@ export function Header() {
   const [isSearching, setIsSearching] = useState(false);
   const [searchResults, setSearchResults] = useState<Resource[]>([]);
   const [showResults, setShowResults] = useState(false);
+  const [categories, setCategories] = useState<ResourceCategory[]>([]);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
+
+  useEffect(() => {
+    loadCategories();
+  }, []);
+
+  const loadCategories = async () => {
+    try {
+      const categoriesResult = await resourceService.getCategories();
+      if (categoriesResult.success) {
+        const activeCategories = categoriesResult.data!
+          .filter(cat => cat.isActive)
+          .sort((a, b) => (a.order || 0) - (b.order || 0));
+        setCategories(activeCategories);
+      }
+    } catch (error) {
+      console.error('加载分类数据失败:', error);
+    }
+  };
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -49,13 +61,14 @@ export function Header() {
 
         {/* 桌面导航 */}
         <div className="hidden lg:flex lg:items-center lg:space-x-8">
-          {navigation.map((item) => (
+          <Link href="/" className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors">首页</Link>
+          {categories.map((category) => (
             <Link
-              key={item.name}
-              href={item.href}
+              key={category.id}
+              href={`/category/${category.slug}`}
               className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 transition-colors"
             >
-              {item.name}
+              {category.name}
             </Link>
           ))}
         </div>
