@@ -241,8 +241,7 @@ export class ResourceDatabase {
   
   // 获取所有资源
   public getResources(): Resource[] {
-    const data = readJsonFile<{resources: Resource[]}>(RESOURCES_FILE, {resources: []});
-    return data.resources || [];
+    return readJsonFile<Resource[]>(RESOURCES_FILE, []);
   }
   
   // 获取所有分类

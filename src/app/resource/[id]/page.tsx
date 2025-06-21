@@ -86,7 +86,7 @@ interface Props {
 }
 
 export default function ResourceDetailPage({ params }: Props) {
-  const resource = resources[params.id as keyof typeof resources];
+  const resource = resources[params.id as unknown as keyof typeof resources];
   const deviceType = useDeviceType();
   const [isQRModalOpen, setIsQRModalOpen] = useState(false);
   const [selectedDownloadLink, setSelectedDownloadLink] = useState<string>('');

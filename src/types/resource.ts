@@ -74,6 +74,7 @@ export interface ResourceStats {
   }[];
   recentUploads: Resource[];
   popularResources: Resource[];
+  lastUpdated?: string;
 }
 
 // 数据库操作结果类型
