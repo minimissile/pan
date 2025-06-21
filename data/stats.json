@@ -1,18 +1,46 @@
 {
-  "stats": {
-    "totalResources": 8,
-    "totalViews": 25100000,
-    "totalDownloads": 7530000,
-    "totalCategories": 5,
-    "popularTags": [
-      { "tag": "科幻", "count": 4 },
-      { "tag": "悬疑", "count": 3 },
-      { "tag": "动画", "count": 2 },
-      { "tag": "剧情", "count": 2 },
-      { "tag": "冒险", "count": 2 },
-      { "tag": "热血", "count": 2 },
-      { "tag": "奇幻", "count": 2 }
-    ],
-    "lastUpdated": "2024-01-01T00:00:00.000Z"
-  }
+  "totalResources": 0,
+  "totalCategories": 5,
+  "totalViews": 0,
+  "totalDownloads": 0,
+  "categoryStats": [
+    {
+      "categoryId": "movie",
+      "categoryName": "电影",
+      "count": 0,
+      "views": 0,
+      "downloads": 0
+    },
+    {
+      "categoryId": "tv",
+      "categoryName": "电视剧",
+      "count": 0,
+      "views": 0,
+      "downloads": 0
+    },
+    {
+      "categoryId": "anime",
+      "categoryName": "动漫",
+      "count": 0,
+      "views": 0,
+      "downloads": 0
+    },
+    {
+      "categoryId": "documentary",
+      "categoryName": "纪录片",
+      "count": 0,
+      "views": 0,
+      "downloads": 0
+    },
+    {
+      "categoryId": "variety",
+      "categoryName": "综艺",
+      "count": 0,
+      "views": 0,
+      "downloads": 0
+    }
+  ],
+  "recentUploads": [],
+  "popularResources": [],
+  "lastUpdated": "2025-06-21T11:47:14.977Z"
 }

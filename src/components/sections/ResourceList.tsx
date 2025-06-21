@@ -87,6 +87,9 @@ export function ResourceList() {
           ? { ...r, views: incrementCount(r.views) }
           : r
       ));
+      
+      // 导航到资源详情页
+      window.location.href = `/resource/${resource.id}`;
     } catch (error) {
       console.error('更新浏览量失败:', error);
     }
@@ -123,8 +126,11 @@ export function ResourceList() {
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {Array.isArray(resources) ? resources.slice(0, visibleResources).map((resource) => (
-          <Link key={resource.id} href={`/resource/${resource.id}`}>
-            <div className="group bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100 dark:border-gray-700 cursor-pointer">
+          <div 
+            key={resource.id} 
+            className="group bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 border border-gray-100 dark:border-gray-700 cursor-pointer"
+            onClick={() => window.location.href = `/resource/${resource.id}`}
+          >
               {/* 封面图片 */}
               <div className="relative aspect-[3/4] bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-700 dark:to-gray-800">
                 <div className="absolute inset-0 flex items-center justify-center">
@@ -150,6 +156,36 @@ export function ResourceList() {
                      resource.status === 'upcoming' ? '即将上映' : resource.status}
                   </div>
                 )}
+                
+                {/* Hover时显示的操作按钮 */}
+                <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center gap-3">
+                  <Button
+                    size="sm"
+                    variant="secondary"
+                    className="bg-white/90 hover:bg-white text-gray-900 backdrop-blur-sm"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      handleView(resource);
+                    }}
+                  >
+                    <Eye className="h-4 w-4 mr-1" />
+                    查看
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="default"
+                    className="bg-blue-600 hover:bg-blue-700 text-white backdrop-blur-sm"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      handleDownload(resource);
+                    }}
+                  >
+                    <Download className="h-4 w-4 mr-1" />
+                    下载
+                  </Button>
+                </div>
               </div>
               
               {/* 内容信息 */}
@@ -205,7 +241,6 @@ export function ResourceList() {
                 </div>
               </div>
             </div>
-          </Link>
         )) : []}
       </div>
       
