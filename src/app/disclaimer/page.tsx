@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
+import { Breadcrumbs } from '../../components/seo/Breadcrumbs';
 
 export const metadata: Metadata = {
   title: '免责声明 - 夸克网盘社',

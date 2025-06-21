@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import Link from 'next/link';
-import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
+import { Breadcrumbs } from '../../components/seo/Breadcrumbs';
 import { ExternalLink, FileText, Home, Shield, Users, Search, Download, Play, Tv, Gamepad2, Smartphone } from 'lucide-react';
 
 export const metadata: Metadata = {

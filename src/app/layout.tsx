@@ -1,11 +1,11 @@
-import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import './globals.css';
-import { Header } from '@/components/layout/Header';
-import { Footer } from '@/components/layout/Footer';
-import { StructuredData } from '@/components/seo/StructuredData';
-import { Analytics, AnalyticsNoScript } from '@/components/analytics/Analytics';
-import { AnalyticsProvider } from '@/components/analytics/AnalyticsProvider';
+import { Header } from '../components/layout/Header';
+import { Footer } from '../components/layout/Footer';
+import { StructuredData } from '../components/seo/StructuredData';
+import { Analytics, AnalyticsNoScript } from '../components/analytics/Analytics';
+import { AnalyticsProvider } from '../components/analytics/AnalyticsProvider';
+import { Suspense } from 'react';
 import { Metadata } from 'next';
 
 const inter = Inter({ 
@@ -107,15 +107,17 @@ export default function RootLayout({
       </head>
       <body className="min-h-screen bg-white font-sans antialiased">
         <AnalyticsNoScript gtmId={process.env.NEXT_PUBLIC_GTM_ID} />
-        <AnalyticsProvider>
-          <div className="flex min-h-screen flex-col">
-            <Header />
-            <main className="flex-1">
-              {children}
-            </main>
-            <Footer />
-          </div>
-        </AnalyticsProvider>
+        <Suspense fallback={<div>Loading...</div>}>
+          <AnalyticsProvider>
+            <div className="flex min-h-screen flex-col">
+              <Header />
+              <main className="flex-1">
+                {children}
+              </main>
+              <Footer />
+            </div>
+          </AnalyticsProvider>
+        </Suspense>
       </body>
     </html>
   );

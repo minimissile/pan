@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
+import { Breadcrumbs } from '../../components/seo/Breadcrumbs';
 import { BarChart3, Users, Eye, Download, TrendingUp, Clock, Globe, Smartphone } from 'lucide-react';
 
 export const metadata: Metadata = {

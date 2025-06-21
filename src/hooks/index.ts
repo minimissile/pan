@@ -125,7 +125,9 @@ export function useIntersectionObserver(
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        setIsVisible(entry.isIntersecting);
+        if (entry) {
+          setIsVisible(entry.isIntersecting);
+        }
       },
       {
         threshold: 0.1,
@@ -240,7 +242,7 @@ export function useKeyboardShortcut(
 ) {
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      const pressedKeys = [];
+      const pressedKeys: string[] = [];
       if (event.ctrlKey) pressedKeys.push('ctrl');
       if (event.metaKey) pressedKeys.push('meta');
       if (event.shiftKey) pressedKeys.push('shift');

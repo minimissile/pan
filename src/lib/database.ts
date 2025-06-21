@@ -433,7 +433,7 @@ export class ResourceDatabase {
         ...updateData,
         id: id, // 确保 id 不会被覆盖
         updatedAt: new Date().toISOString()
-      };
+      } as Resource;
       
       resources[index] = updatedResource;
       
@@ -634,12 +634,12 @@ export class ResourceDatabase {
         };
       }
       
-      const updatedCategory = {
+      const updatedCategory: ResourceCategory = {
         id, // 确保id不会被undefined
         ...categories[index],
         ...updateData,
         updatedAt: new Date().toISOString()
-      };
+      } as ResourceCategory;
       
       categories[index] = updatedCategory;
       
@@ -677,6 +677,13 @@ export class ResourceDatabase {
       }
       
       const category = categories[index];
+      
+      if (!category) {
+        return {
+          success: false,
+          error: '分类不存在'
+        };
+      }
       
       // 检查是否有资源使用此分类
       const resources = this.getResources();
@@ -793,7 +800,7 @@ export class ResourceDatabase {
   }
   
   // 更新统计信息
-  private updateStats(): void {
+  public updateStats(): void {
     try {
       const stats = this.getStats();
       writeJsonFile(STATS_FILE, {

@@ -16,9 +16,9 @@ export const useResourceDatabase = () => {
     setLoading(true);
     setError(null);
     try {
-      const result = await resourceService.getResources(query);
+      const result = await resourceService.queryResources(query);
       if (result.success && result.data) {
-        setResources(result.data);
+        setResources(result.data.resources);
       } else {
         setError(result.error || '加载资源失败');
       }
@@ -173,8 +173,8 @@ export const useResourceDatabase = () => {
       });
       
       if (result.success && result.data) {
-        setResources(result.data);
-        return result.data;
+        setResources(result.data.resources);
+        return result.data.resources;
       } else {
         setError(result.error || '搜索失败');
         return [];

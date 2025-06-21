@@ -177,9 +177,9 @@ export function getQueryParams(url?: string): Record<string, string> {
   );
   const params: Record<string, string> = {};
   
-  for (const [key, value] of searchParams.entries()) {
+  Array.from(searchParams.entries()).forEach(([key, value]) => {
     params[key] = value;
-  }
+  });
   
   return params;
 }

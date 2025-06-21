@@ -2,45 +2,65 @@
 
 import React, { useState, useEffect } from 'react';
 import { Calendar, Download, Eye, Star, Clock } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Button } from '../ui/Button';
 import Link from 'next/link';
-import { analytics } from '@/components/analytics/Analytics';
+import { analytics } from '../analytics/Analytics';
 import { ResourceService } from '@/lib/resourceService';
 import { Resource } from '@/types/resource';
 
 const resourceService = new ResourceService();
 
-export function ResourceList() {
-  const [resources, setResources] = useState<Resource[]>([]);
+interface ResourceListProps {
+  resources?: Resource[];
+  title?: string;
+  subtitle?: string;
+  showViewAll?: boolean;
+  showLoadMore?: boolean;
+}
+
+export function ResourceList({
+  resources: initialResources,
+  title = "最新资源",
+  subtitle = "精选优质资源，持续更新中",
+  showViewAll = true,
+  showLoadMore = true,
+}: ResourceListProps) {
+  const [resources, setResources] = useState<Resource[]>(initialResources || []);
   const [visibleResources, setVisibleResources] = useState(6);
   const [isLoading, setIsLoading] = useState(false);
-  const [totalResources, setTotalResources] = useState(0);
+  const [totalResources, setTotalResources] = useState(initialResources ? initialResources.length : 0);
 
   // 加载资源数据
   useEffect(() => {
-    const loadResources = async () => {
-      setIsLoading(true);
-      try {
-        const result = await resourceService.queryResources({
-          page: 1,
-          limit: 50,
-          sortBy: 'uploadDate',
-          sortOrder: 'desc'
-        });
-        
-        if (result.success && result.data) {
-          setResources(result.data.resources || []);
-          setTotalResources(result.data.total || 0);
+    if (initialResources) {
+      setResources(initialResources);
+      setTotalResources(initialResources.length);
+      setVisibleResources(initialResources.length < 6 ? initialResources.length : 6);
+    } else {
+      const loadResources = async () => {
+        setIsLoading(true);
+        try {
+          const result = await resourceService.queryResources({
+            page: 1,
+            limit: 50,
+            sortBy: 'uploadDate',
+            sortOrder: 'desc'
+          });
+          
+          if (result.success && result.data) {
+            setResources(result.data.resources || []);
+            setTotalResources(result.data.total || 0);
+          }
+        } catch (error) {
+          console.error('加载资源失败:', error);
+        } finally {
+          setIsLoading(false);
         }
-      } catch (error) {
-        console.error('加载资源失败:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
+      };
 
-    loadResources();
-  }, []);
+      loadResources();
+    }
+  }, [initialResources]);
 
   const handleLoadMore = () => {
     setIsLoading(true);
@@ -113,15 +133,17 @@ export function ResourceList() {
       <div className="flex items-center justify-between mb-8">
         <div>
           <h2 id="resources-heading" className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-white mb-2">
-            最新资源
+            {title}
           </h2>
           <p className="text-gray-600 dark:text-gray-400">
-            精选优质资源，持续更新中
+            {subtitle}
           </p>
         </div>
-        <Button variant="outline">
-          查看全部
-        </Button>
+        {showViewAll && (
+          <Button variant="outline">
+            查看全部
+          </Button>
+        )}
       </div>
       
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -151,9 +173,9 @@ export function ResourceList() {
                 {/* 状态标签 */}
                 {resource.status && (
                   <div className="absolute bottom-3 left-3 bg-green-500 text-white px-2 py-1 rounded-lg text-xs">
-                    {resource.status === 'completed' ? '已完结' : 
-                     resource.status === 'ongoing' ? '连载中' : 
-                     resource.status === 'upcoming' ? '即将上映' : resource.status}
+                    {resource.status === 'active' ? '活跃' : 
+                     resource.status === 'inactive' ? '归档' : 
+                     resource.status === 'pending' ? '待定' : resource.status}
                   </div>
                 )}
                 
@@ -245,7 +267,7 @@ export function ResourceList() {
       </div>
       
       {/* 加载更多按钮 */}
-      {Array.isArray(resources) && visibleResources < resources.length && resources.length > 0 && (
+      {showLoadMore && Array.isArray(resources) && visibleResources < resources.length && resources.length > 0 && (
         <div className="text-center mt-12">
           <Button 
             variant="outline" 

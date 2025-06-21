@@ -150,15 +150,3 @@ export const trackTimeOnPage = (timeInSeconds: number, pagePath: string) => {
     value: timeInSeconds,
   });
 };
-
-// 声明全局 gtag 函数类型
-declare global {
-  interface Window {
-    gtag: (
-      command: 'config' | 'event' | 'js',
-      targetId: string | Date,
-      config?: any
-    ) => void;
-    dataLayer: any[];
-  }
-}

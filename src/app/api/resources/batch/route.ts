@@ -17,9 +17,18 @@ export async function POST(request: NextRequest) {
       );
     }
     
-    const result = await db.batchOperation(operations);
+    const results = [];
+    for (const operation of operations) {
+      const result = await db.batchOperation(operation);
+      results.push(result);
+    }
     
-    return NextResponse.json(result);
+    const overallResult = {
+      success: results.every(r => r.success),
+      results: results.map(r => r.data || { success: r.success, error: r.error })
+    };
+
+    return NextResponse.json(overallResult);
   } catch (error) {
     return NextResponse.json(
       {

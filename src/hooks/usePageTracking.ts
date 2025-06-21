@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import { usePathname, useSearchParams } from 'next/navigation';
-import { analytics } from '@/components/analytics/Analytics';
+import { analytics } from '../components/analytics/Analytics';
 
 /**
  * 页面访问追踪 Hook

@@ -3,11 +3,11 @@
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { Menu, X, Share2, Search, User, Moon, Sun, Loader2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Button } from '../ui/Button';
 import { useRouter } from 'next/navigation';
 import { Resource } from '@/types/resource';
 import { ResourceService } from '@/lib/resourceService';
-import { analytics } from '@/components/analytics/Analytics';
+import { analytics } from '../analytics/Analytics';
 
 const resourceService = new ResourceService();
 
@@ -23,6 +23,14 @@ export function Header() {
   const [categories, setCategories] = useState<ResourceCategory[]>([]);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
+
+  const navigation = [
+    { name: '首页', href: '/' },
+    ...categories.map((category) => ({
+      name: category.name,
+      href: `/category/${category.slug}`,
+    })),
+  ];
 
   useEffect(() => {
     loadCategories();

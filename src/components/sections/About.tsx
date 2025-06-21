@@ -1,5 +1,5 @@
 import { CheckCircle, Award, Target, TrendingUp } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+
 
 const achievements = [
   {
@@ -74,12 +74,7 @@ export function About() {
             </div>
             
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button size="lg">
-                了解更多
-              </Button>
-              <Button variant="outline" size="lg">
-                查看案例
-              </Button>
+
             </div>
           </div>
           

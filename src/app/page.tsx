@@ -1,11 +1,10 @@
-import type { Metadata } from 'next';
 import { Metadata } from 'next';
-import { Hero } from '@/components/sections/Hero';
-import { ResourceList } from '@/components/sections/ResourceList';
-import { Categories } from '@/components/sections/Categories';
-import { CTA } from '@/components/sections/CTA';
-import { Footer } from '@/components/layout/Footer';
-import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
+import { Hero } from '../components/sections/Hero';
+import { ResourceList } from '../components/sections/ResourceList';
+import { Categories } from '../components/sections/Categories';
+import { CTA } from '../components/sections/CTA';
+import { Footer } from '../components/layout/Footer';
+import { Breadcrumbs } from '../components/seo/Breadcrumbs';
 
 export const metadata: Metadata = {
   title: '夸克网盘社-一个专门分享夸克网盘资源的网站！Kuakes.com',

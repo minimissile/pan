@@ -115,8 +115,8 @@ export function Categories() {
       
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
         {categories.map((category) => {
-          const IconComponent = iconMap[category.icon] || Folder;
-          const colorClass = getColorClass(category.color);
+          const IconComponent = (category.icon && iconMap[category.icon]) || Folder;
+          const colorClass = getColorClass(category.color || '');
           const resourceCount = getCategoryCount(category.id);
           
           return (

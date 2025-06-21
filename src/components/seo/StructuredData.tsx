@@ -36,15 +36,15 @@ export function StructuredData({ type = 'organization', data }: StructuredDataPr
 function getOrganizationData(): Organization {
   return {
     '@type': 'Organization',
-    '@context': 'https://schema.org',
+
     name: 'SEO React App',
     description: '专业的SEO友好React应用开发服务',
     url: process.env.SITE_URL || 'https://yourdomain.com',
     logo: {
       '@type': 'ImageObject',
       url: `${process.env.SITE_URL || 'https://yourdomain.com'}/images/logo.png`,
-      width: 200,
-      height: 200,
+      width: '200',
+      height: '200',
     },
     contactPoint: {
       '@type': 'ContactPoint',
@@ -71,7 +71,7 @@ function getOrganizationData(): Organization {
 function getWebsiteData(): WebSite {
   return {
     '@type': 'WebSite',
-    '@context': 'https://schema.org',
+
     name: 'SEO React App',
     description: '专业的SEO友好React应用开发服务',
     url: process.env.SITE_URL || 'https://yourdomain.com',
@@ -81,7 +81,7 @@ function getWebsiteData(): WebSite {
         '@type': 'EntryPoint',
         urlTemplate: `${process.env.SITE_URL || 'https://yourdomain.com'}/search?q={search_term_string}`,
       },
-      'query-input': 'required name=search_term_string',
+
     },
     publisher: {
       '@type': 'Organization',
@@ -98,14 +98,14 @@ function getBreadcrumbData(items: Array<{ name: string; url: string }>): Breadcr
   if (!items || items.length === 0) {
     return {
       '@type': 'BreadcrumbList',
-      '@context': 'https://schema.org',
+
       itemListElement: [],
     };
   }
 
   return {
     '@type': 'BreadcrumbList',
-    '@context': 'https://schema.org',
+
     itemListElement: items.map((item, index) => ({
       '@type': 'ListItem',
       position: index + 1,

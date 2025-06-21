@@ -2,10 +2,10 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { Search, X, Filter, Loader2 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Button } from '../ui/Button';
 import { Resource } from '@/types/resource';
 import { ResourceService } from '@/lib/resourceService';
-import { analytics } from '@/components/analytics/Analytics';
+import { analytics } from '../analytics/Analytics';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
@@ -16,15 +16,17 @@ interface SearchBoxProps {
   placeholder?: string;
   showFilters?: boolean;
   autoFocus?: boolean;
+  initialValue?: string;
 }
 
 export function SearchBox({ 
   onSearchResults, 
   placeholder = "搜索影视剧、电影、综艺、动漫...",
   showFilters = true,
-  autoFocus = false 
+  autoFocus = false,
+  initialValue = ''
 }: SearchBoxProps) {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState(initialValue);
   const [isSearching, setIsSearching] = useState(false);
   const [searchResults, setSearchResults] = useState<Resource[]>([]);
   const [totalResults, setTotalResults] = useState(0);

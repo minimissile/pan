@@ -98,10 +98,6 @@ class ResourceService {
     return this.request<ResourceCategory[]>('/categories');
   }
 
-  // 根据分类ID获取资源
-  async getResourcesByCategory(categoryId: string): Promise<DatabaseResult<Resource[]>> {
-    return this.request<Resource[]>(`/?category=${categoryId}`);
-  }
   
   // 根据ID获取分类
   async getCategoryById(id: string): Promise<DatabaseResult<ResourceCategory>> {

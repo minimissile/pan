@@ -1,8 +1,12 @@
 'use client';
 
-import { GoogleAnalytics } from './GoogleAnalytics';
-import { BaiduAnalytics } from './BaiduAnalytics';
-import { GoogleTagManager, GoogleTagManagerNoScript } from './GoogleTagManager';
+import * as ga from './GoogleAnalytics';
+import * as baidu from './BaiduAnalytics';
+import * as gtm from './GoogleTagManager';
+
+const { GoogleAnalytics } = ga;
+const { BaiduAnalytics } = baidu;
+const { GoogleTagManager, GoogleTagManagerNoScript } = gtm;
 
 interface AnalyticsProps {
   gaId?: string;
@@ -72,41 +76,9 @@ export function AnalyticsNoScript({
 }
 
 // 导出所有追踪函数
-export {
-  trackPageView,
-  trackEvent,
-  trackConversion,
-  trackDownload,
-  trackSearch,
-  trackOutboundLink,
-  trackVideoPlay,
-  trackFormSubmit,
-  trackScrollDepth,
-  trackTimeOnPage,
-} from './GoogleAnalytics';
-
-export {
-  trackBaiduPageView,
-  trackBaiduEvent,
-  trackBaiduEcommerce,
-} from './BaiduAnalytics';
-
-export {
-  pushToDataLayer,
-  trackGTMPageView,
-  trackGTMLogin,
-  trackGTMSignUp,
-  trackGTMSearch,
-  trackGTMShare,
-  trackGTMDownload,
-  trackGTMVideo,
-  trackGTMForm,
-  trackGTMError,
-  trackGTMCustomEvent,
-  trackGTMViewItem,
-  trackGTMAddToCart,
-  trackGTMPurchase,
-} from './GoogleTagManager';
+export * from './GoogleAnalytics';
+export * from './BaiduAnalytics';
+export * from './GoogleTagManager';
 
 // 统一的追踪函数
 export const analytics = {
@@ -114,18 +86,18 @@ export const analytics = {
   pageView: (url: string, title?: string) => {
     if (typeof window !== 'undefined') {
       // Google Analytics
-      if (window.gtag) {
-        trackPageView(url, title);
+      if (typeof window.gtag === 'function') {
+        ga.trackPageView(url, title);
       }
       
       // GTM
-      if (window.dataLayer) {
-        trackGTMPageView(url, title);
+      if (window.dataLayer && typeof window.dataLayer.push === 'function') {
+        gtm.trackGTMPageView(url, title);
       }
       
       // 百度统计
-      if (window._hmt) {
-        trackBaiduPageView(url);
+      if (window._hmt && typeof window._hmt.push === 'function') {
+        baidu.trackBaiduPageView(url);
       }
     }
   },
@@ -144,13 +116,13 @@ export const analytics = {
   }) => {
     if (typeof window !== 'undefined') {
       // Google Analytics
-      if (window.gtag) {
-        trackEvent({ action, category, label, value });
+      if (typeof window.gtag === 'function') {
+        ga.trackEvent({ action, category, label, value });
       }
       
       // GTM
-      if (window.dataLayer) {
-        trackGTMCustomEvent('custom_event', {
+      if (window.dataLayer && typeof window.dataLayer.push === 'function') {
+        gtm.trackGTMCustomEvent('custom_event', {
           event_action: action,
           event_category: category,
           event_label: label,
@@ -159,8 +131,8 @@ export const analytics = {
       }
       
       // 百度统计
-      if (window._hmt) {
-        trackBaiduEvent({ category, action, label, value });
+      if (window._hmt && typeof window._hmt.push === 'function') {
+        baidu.trackBaiduEvent({ category, action, label, value });
       }
     }
   },
@@ -169,18 +141,18 @@ export const analytics = {
   download: (fileName: string, fileType: string, fileSize?: number) => {
     if (typeof window !== 'undefined') {
       // Google Analytics
-      if (window.gtag) {
-        trackDownload(fileName, fileType);
+      if (typeof window.gtag === 'function') {
+        ga.trackDownload(fileName, fileType);
       }
       
       // GTM
-      if (window.dataLayer) {
-        trackGTMDownload(fileName, fileType, fileSize);
+      if (window.dataLayer && typeof window.dataLayer.push === 'function') {
+        gtm.trackGTMDownload(fileName, fileType, fileSize);
       }
       
       // 百度统计
-      if (window._hmt) {
-        trackBaiduEvent({
+      if (window._hmt && typeof window._hmt.push === 'function') {
+        baidu.trackBaiduEvent({
           category: 'file',
           action: 'download',
           label: `${fileName} (${fileType})`,
@@ -193,18 +165,18 @@ export const analytics = {
   search: (searchTerm: string, resultCount?: number) => {
     if (typeof window !== 'undefined') {
       // Google Analytics
-      if (window.gtag) {
-        trackSearch(searchTerm, resultCount);
+      if (typeof window.gtag === 'function') {
+        ga.trackSearch(searchTerm, resultCount);
       }
       
       // GTM
       if (window.dataLayer) {
-        trackGTMSearch(searchTerm, resultCount);
+        gtm.trackGTMSearch(searchTerm, resultCount);
       }
       
       // 百度统计
       if (window._hmt) {
-        trackBaiduEvent({
+        baidu.trackBaiduEvent({
           category: 'engagement',
           action: 'search',
           label: searchTerm,
@@ -219,12 +191,12 @@ export const analytics = {
     if (typeof window !== 'undefined') {
       // GTM
       if (window.dataLayer) {
-        trackGTMError(errorMessage, errorType);
+        gtm.trackGTMError(errorMessage, errorType);
       }
       
       // 百度统计
       if (window._hmt) {
-        trackBaiduEvent({
+        baidu.trackBaiduEvent({
           category: 'error',
           action: errorType,
           label: errorMessage,
@@ -237,7 +209,11 @@ export const analytics = {
 // 声明全局类型
 declare global {
   interface Window {
-    gtag: any;
+    gtag: (
+      command: 'config' | 'event' | 'js',
+      targetId: string | Date,
+      config?: any
+    ) => void;
     dataLayer: any[];
     _hmt: any[];
   }

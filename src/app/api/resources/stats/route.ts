@@ -25,13 +25,10 @@ export async function GET(request: NextRequest) {
 export async function PUT(request: NextRequest) {
   try {
     const body = await request.json();
-    const result = await db.updateStats(body);
+    await db.updateStats();
+    const result = db.getStats();
     
-    if (result.success) {
-      return NextResponse.json(result);
-    } else {
-      return NextResponse.json(result, { status: 400 });
-    }
+    return NextResponse.json({ success: true, data: result });
   } catch (error) {
     return NextResponse.json(
       {

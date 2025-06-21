@@ -4,9 +4,9 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import { Resource } from '@/types/resource';
 import { resourceService } from '@/lib/resourceService';
-import { ResourceList } from '@/components/sections/ResourceList';
-import { Container } from '@/components/ui/container';
-import { LoadingSpinner } from '@/components/ui/LoadingSpinner';
+import { ResourceList } from '../../../components/sections/ResourceList';
+import { Container } from '../../../components/ui/Container';
+import { LoadingSpinner } from '../../../components/ui/LoadingSpinner';
 
 export default function CategoryPage() {
   const params = useParams();
@@ -25,13 +25,13 @@ export default function CategoryPage() {
     try {
       setLoading(true);
       const categoriesResult = await resourceService.getCategories();
-      if (categoriesResult.success) {
+      if (categoriesResult.success && categoriesResult.data) {
         const currentCategory = categoriesResult.data.find(cat => cat.slug === slug);
         if (currentCategory) {
           setCategoryName(currentCategory.name);
           const resourcesResult = await resourceService.getResourcesByCategory(currentCategory.id);
           if (resourcesResult.success && resourcesResult.data) {
-            setResources(resourcesResult.data);
+            setResources(resourcesResult.data.resources);
           } else {
             setResources([]);
           }

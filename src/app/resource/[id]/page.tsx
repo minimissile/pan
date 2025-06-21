@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import { Calendar, Download, Eye, Star, Clock, Share2, Heart, MessageCircle } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { QRCodeModal } from '@/components/ui/QRCodeModal';
+import { Button } from '../../../components/ui/Button';
+import { QRCodeModal } from '../../../components/ui/QRCodeModal';
 import { useDeviceType } from '@/hooks';
 import Link from 'next/link';
 
@@ -111,7 +111,9 @@ export default function ResourceDetailPage({ params }: Props) {
   const handleMainDownload = () => {
     if (resource.downloadLinks && resource.downloadLinks.length > 0) {
       const firstLink = resource.downloadLinks[0];
-      handleDownload(firstLink.link, firstLink.quality);
+      if (firstLink) {
+        handleDownload(firstLink.link, firstLink.quality);
+      }
     }
   };
 

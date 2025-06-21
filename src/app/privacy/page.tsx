@@ -1,5 +1,5 @@
 import { Metadata } from 'next';
-import { Breadcrumbs } from '@/components/seo/Breadcrumbs';
+import { Breadcrumbs } from '../../components/seo/Breadcrumbs';
 
 export const metadata: Metadata = {
   title: '隐私政策 - 夸克网盘社',
